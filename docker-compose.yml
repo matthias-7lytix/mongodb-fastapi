@@ -1,0 +1,66 @@
+version: "3.9"
+
+x-mongodb-host: &MONGODB_HOST
+  mongodb
+x-mongodb-user: &MONGODB_USER
+  admin
+x-mongodb-password: &MONGODB_PASSWORD
+  password
+x-mongodb-port: &MONGODB_PORT
+  27017
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongo-db
+    hostname: *MONGODB_HOST
+    ports:
+      - target: *MONGODB_PORT
+        published: 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: *MONGODB_USER
+      MONGO_INITDB_ROOT_PASSWORD: *MONGODB_PASSWORD
+    volumes:
+      - mongo-data:/data/db
+      - mongo-cfg:/data/configdb
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    ports:
+      - 8080:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: *MONGODB_USER
+      ME_CONFIG_MONGODB_ADMINPASSWORD: *MONGODB_PASSWORD
+      ME_CONFIG_MONGODB_SERVER: *MONGODB_HOST
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/app:rw
+      - app-root:/root:rw
+    working_dir: /app
+    environment:
+      APP_MONGODB_USER: *MONGODB_USER
+      APP_MONGODB_PASSWORD: *MONGODB_PASSWORD
+      APP_MONGODB_HOST: *MONGODB_HOST
+      APP_MONGODB_PORT: *MONGODB_PORT
+
+volumes:
+  mongo-data:
+    name: mongo-data
+    driver: local
+  mongo-cfg:
+    name: mongo-cfg
+    driver: local
+  app-root:
+    name: app-root
+    driver: local

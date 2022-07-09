@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pydantic
+fastapi-users[beanie]
+flake8
+ipykernel
+dynaconf
