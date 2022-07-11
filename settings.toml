@@ -1,0 +1,6 @@
+mongodb_user = ""
+mongodb_password = ""
+mongodb_host = ""
+mongodb_port = ""
+db_url = "@format mongodb://{this.mongodb_user}:{this.mongodb_password}@{this.mongodb_host}:{this.mongodb_port}/app"
+temp = "temp var"
