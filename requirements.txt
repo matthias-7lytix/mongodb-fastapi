@@ -5,3 +5,5 @@ fastapi-users[beanie]
 flake8
 ipykernel
 dynaconf
+requests
+typer
