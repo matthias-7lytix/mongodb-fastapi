@@ -8,6 +8,12 @@ x-mongodb-password: &MONGODB_PASSWORD
   password
 x-mongodb-port: &MONGODB_PORT
   27017
+x-mongodb-db: &MONGODB_DB
+  app
+x-redis-host: &REDIS_HOST
+  redis
+x-redis-port: &REDIS_PORT
+  6379
 
 services:
   mongodb:
@@ -20,6 +26,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: *MONGODB_USER
       MONGO_INITDB_ROOT_PASSWORD: *MONGODB_PASSWORD
+      MONGO_INITDB_DATABASE: *MONGODB_DB
     volumes:
       - mongo-data:/data/db
       - mongo-cfg:/data/configdb
@@ -37,6 +44,14 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: *MONGODB_PASSWORD
       ME_CONFIG_MONGODB_SERVER: *MONGODB_HOST
 
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    hostname: *REDIS_HOST
+    ports:
+      - target: *REDIS_PORT
+        published: 6379
+
   app:
     build:
       context: .
@@ -44,6 +59,7 @@ services:
     container_name: app
     depends_on:
       - mongodb
+      - redis
     volumes:
       - .:/app:rw
       - app-root:/root:rw
@@ -53,6 +69,8 @@ services:
       APP_MONGODB_PASSWORD: *MONGODB_PASSWORD
       APP_MONGODB_HOST: *MONGODB_HOST
       APP_MONGODB_PORT: *MONGODB_PORT
+      APP_REDIS_HOST: *REDIS_HOST
+      APP_REDIS_PORT: *REDIS_PORT
 
 volumes:
   mongo-data:
