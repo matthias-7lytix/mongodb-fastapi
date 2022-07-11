@@ -1,10 +1,9 @@
 fastapi
 uvicorn
 pydantic
-fastapi-users[beanie]
+fastapi-users[beanie,redis]
 flake8
 ipykernel
 dynaconf
 requests
 typer
-redis
