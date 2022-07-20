@@ -1,13 +1,11 @@
 from fastapi import Body, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel, Field, EmailStr
-from bson import ObjectId
-from typing import Optional, List
+from typing import List
 
-from .db import db
-from .app import app
-from .students import StudentModel, UpdateStudentModel
+from ..db import db
+from ..app import app
+from ..students import StudentModel, UpdateStudentModel
 
 
 @app.post("/", response_description="Add new student", response_model=StudentModel)
@@ -63,20 +61,3 @@ async def delete_student(id: str):
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
     raise HTTPException(status_code=404, detail=f"Student {id} not found")
-
-
-if __name__ == "__main__":
-    import requests
-
-    student = {
-        "name": "Jane Doe",
-        "email": "jdoe@example.com",
-        "course": "Experiments, Science, and Fashion in Nanophotonics",
-        "gpa": "3.0",
-    }
-
-    r = requests.post('http://localhost:8000', json=student)
-    id_ = r.json()["_id"]
-
-    student["email"] = "jane_doe@example.com"
-    r = requests.put('http://localhost:8000/%s' % id_, json=student)
