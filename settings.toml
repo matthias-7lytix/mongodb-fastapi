@@ -1,6 +1,9 @@
-mongodb_user = ""
-mongodb_password = ""
-mongodb_host = ""
-mongodb_port = ""
-db_url = "@format mongodb://{this.mongodb_user}:{this.mongodb_password}@{this.mongodb_host}:{this.mongodb_port}/app"
-temp = "temp var"
+mongodb_user = ""  # should be set in environmental variables (.env file)
+mongodb_password = ""  # should be set in environmental variables (.env file)
+mongodb_host = "localhost"
+mongodb_port = 27017
+mongodb_db = "app"
+mongodb_url = "@format mongodb://{this.mongodb_user}:{this.mongodb_password}@{this.mongodb_host}:{this.mongodb_port}/{this.mongodb_db}"
+redis_host = "localhost"
+redis_port = 6379
+redis_url = "@format redis://{this.redis_host}:{this.redis_port}"
