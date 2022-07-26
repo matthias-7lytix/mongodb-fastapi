@@ -1,7 +1,9 @@
+import datetime
+
 from enum import Enum
 from beanie import PydanticObjectId
 from fastapi_users import schemas
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
@@ -33,15 +35,20 @@ class Participant(BaseModel):
 
 
 class UserRead(schemas.BaseUser[PydanticObjectId]):
+    public_key: str
+    registered_on: datetime.datetime
     groups: List[UserGroupMember]
     experiments: List[Participant]
 
 
 class UserCreate(schemas.BaseUserCreate):
-    groups: List[UserGroupMember]
-    experiments: List[Participant]
+    public_key: str
+    registered_on: datetime.datetime = Field(default_factory=datetime.datetime.now)  # noqa: E501
+    groups: List[UserGroupMember] = []
+    experiments: List[Participant] = []
 
 
 class UserUpdate(schemas.BaseUserUpdate):
+    public_key: Optional[str]
     groups: Optional[List[UserGroupMember]]
     experiments: Optional[List[Participant]]
