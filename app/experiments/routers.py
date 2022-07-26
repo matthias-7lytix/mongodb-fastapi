@@ -1,4 +1,3 @@
-from gettext import dpgettext
 from http.client import HTTPException
 from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, Body
