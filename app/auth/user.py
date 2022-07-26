@@ -75,13 +75,15 @@ class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
             if (group := await User.find_group_by_name(group_name)) is None:
                 user_group.is_admin = True
 
-            elif group.group_type == user_group.group.group_type:
+            elif (group.group_type == user_group.group.group_type
+                  and group.is_public == user_group.group.is_public):
                 user_group.is_admin = False
 
             else:
                 raise HTTPException(
                     status_code=409,
-                    detail=(f"Group {group.group_name} alread exists "
+                    detail=(f"{'Public g' if group.is_public else 'G'}roup"
+                            f"{group.group_name} alread exists "
                             f"with type '{group.group_type}'.")
                     )
 

@@ -10,14 +10,13 @@ class GroupType(Enum):
     NGO = "ngo"
     EDU = "edu"
     GOV = "gov"
-    PUBLIC = "public"
-    PRIVATE = "private"
     OTHER = "other"
 
 
 class UserGroup(BaseModel):
     group_name: str
-    group_type: GroupType = GroupType.PRIVATE
+    group_type: GroupType = GroupType.OTHER
+    is_public: bool = False
     
     class Config:
         use_enum_values = True
