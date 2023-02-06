@@ -9,7 +9,7 @@ from .schemas import UserGroupMember, Participant, UserGroup
 
 
 class User(BeanieBaseUser[PydanticObjectId]):
-    public_key: str
+    public_key: str = ""
     registered_on: datetime.datetime = Field(default_factory=datetime.datetime.now)  # noqa: E501
     groups: List[UserGroupMember] = []
     experiments: List[Participant] = []

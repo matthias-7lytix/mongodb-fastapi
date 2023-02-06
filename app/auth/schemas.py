@@ -39,16 +39,19 @@ class UserRead(schemas.BaseUser[PydanticObjectId]):
     registered_on: datetime.datetime
     groups: List[UserGroupMember]
     experiments: List[Participant]
+    pass
 
 
 class UserCreate(schemas.BaseUserCreate):
-    public_key: str
+    public_key: str = ""
     registered_on: datetime.datetime = Field(default_factory=datetime.datetime.now)  # noqa: E501
     groups: List[UserGroupMember] = []
     experiments: List[Participant] = []
+    pass
 
 
 class UserUpdate(schemas.BaseUserUpdate):
-    public_key: Optional[str]
-    groups: Optional[List[UserGroupMember]]
-    experiments: Optional[List[Participant]]
+    # public_key: Optional[str]
+    # groups: Optional[List[UserGroupMember]]
+    # experiments: Optional[List[Participant]]
+    pass
